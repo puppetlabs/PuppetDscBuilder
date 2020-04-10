@@ -23,15 +23,18 @@ Describe 'Parameter Information Retrieval' {
     Context 'When the AST cannot be parsed for functions' {
       # We cannot effectively mock out the underlying object, so we need to retrieve a
       # well-known DSC resource at a specific version
-      $BinaryResource = Get-DscResource -Name File
+      $UnparseableResource = Get-DscResource -Name PackageRepo -Module @{
+        ModuleName    = 'Nuget'
+        ModuleVersion = '1.3.3'
+      }
       
       It 'returns only the set of values retrievable from the DscResourceInfo object' {
-        $ParameterToInspect = Get-DscResourceParameterInfo -DscResource $BinaryResource |
+        $ParameterToInspect = Get-DscResourceParameterInfo -DscResource $UnparseableResource |
           Select-Object -First 1
-        $ParameterToInspect.Name | Should -BeExactly 'destinationpath'
+        $ParameterToInspect.Name | Should -BeExactly 'ensure'
         # The default value for a parameter can only be discovered via the AST
         $ParameterToInspect.DefaultValue | Should -BeNullOrEmpty
-        $ParameterToInspect.Type | Should -BeExactly '"String"'
+        $ParameterToInspect.Type | Should -BeExactly """Enum['absent', 'present']"""
         # The help info for a parameter can only be discovered via the AST
         $ParameterToInspect.Help | Should -BeNullOrEmpty
         $ParameterToInspect.mandatory_for_get | Should -BeExactly 'true'
