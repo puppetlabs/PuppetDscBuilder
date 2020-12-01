@@ -31,6 +31,7 @@ $PowerShellModules = @(
   @{ Name = 'xPSDesiredStateConfiguration' }
   @{ Name = 'PSDscResources' ; RequiredVersion = '2.12.0.0' }
   @{ Name = 'AccessControlDsc' ; RequiredVersion = '1.4.0.0' }
+  @{ Name = 'RubyInstaller' }
 )
 Write-Host "Installing $($PowerShellModules.Count) modules with Install-Module"
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
