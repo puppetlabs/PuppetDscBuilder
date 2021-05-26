@@ -1,0 +1,5 @@
+---
+fixtures:
+  forge_modules:
+    pwshlib:
+      repo: puppetlabs/pwshlib

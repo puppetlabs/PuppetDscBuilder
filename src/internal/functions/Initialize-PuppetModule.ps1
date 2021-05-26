@@ -26,9 +26,20 @@ function Initialize-PuppetModule {
   )
 
   begin {
-    $Command = "pdk new module $PuppetModuleName --skip-interview --template-url https://github.com/puppetlabs/pdk-templates"
+    If (Get-Command -Name 'pct' -CommandType Application -ErrorAction SilentlyContinue) {
+      $PdkTemplateFolder = Join-Path -Path $(Split-Path -Path $MyInvocation.MyCommand.Module.Path -Parent -Resolve) -ChildPath 'internal/templates/pdk'
+      $Command = "pct new dsc-module --name $PuppetModuleName --output $OutputFolderPath --templatepath $PdkTemplateFolder"
+      $CommandErrorFilterScript = {
+        $_ -match 'ERR'
+      }
+    } Else {
+      $Command = "pdk new module $PuppetModuleName --skip-interview --template-url https://github.com/puppetlabs/pdk-templates"
+      $CommandErrorFilterScript = {
+        $_ -match 'ERROR'
+      }
+    }
     $ModuleFolderPath = Join-Path -Path $OutputFolderPath -ChildPath $PuppetModuleName
-    $TemplateFolder = Join-Path -Path (Split-Path -Path $MyInvocation.MyCommand.Module.Path -Parent) -ChildPath 'internal/templates/static'
+    $StaticTemplateFolder = Join-Path -Path (Split-Path -Path $MyInvocation.MyCommand.Module.Path -Parent) -ChildPath 'internal/templates/static'
   }
 
   process {
@@ -39,16 +50,14 @@ function Initialize-PuppetModule {
         $null = New-Item -Path $OutputFolderPath -ItemType Directory -Force
       }
       # Clean previously scaffolded folder
-      If (Test-Path $ModuleFolderPath){
-        If ($PSCmdlet.ShouldProcess($ModuleFolderPath, "Remove existing Puppet Module Folder")) {
+      If (Test-Path $ModuleFolderPath) {
+        If ($PSCmdlet.ShouldProcess($ModuleFolderPath, 'Remove existing Puppet Module Folder')) {
           Remove-Item -Path $ModuleFolderPath -Force -Recurse
         }
       }
-      Invoke-PdkCommand -Path $OutputFolderPath -Command $Command -SuccessFilterScript {
-        $_ -match "Module '$PuppetModuleName' generated at path"
-      }
+      Invoke-PdkCommand -Path $OutputFolderPath -Command $Command -ErrorFilterScript $CommandErrorFilterScript
       # Copy static template files
-      Copy-Item -Path "$TemplateFolder/*" -Destination $ModuleFolderPath -Recurse -Force
+      Copy-Item -Path "$StaticTemplateFolder/*" -Destination $ModuleFolderPath -Recurse -Force
     } Catch {
       $PSCmdlet.ThrowTerminatingError($PSItem)
     }

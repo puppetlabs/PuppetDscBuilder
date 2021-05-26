@@ -1,0 +1,26 @@
+---
+template:
+  id: dsc-module
+  type: project
+  display: Puppetized DSC Module
+  version: 0.1.0
+  url: https://github.com/puppetlabs/pct-puppet-dsc-module
+
+dsc_module:
+  author: dsc
+  license: MIT
+  version: 0.1.0
+  summary: A bare bones Puppet Module
+  operatingsystem_support:
+    - operatingsystem: Windows
+      release: [10, 2016, 2019]
+  dependencies:
+    - version_requirement: ">= 0.7.0 < 2.0.0"
+      name: puppetlabs/pwshlib
+  requirements:
+    - name: puppet
+      version_requirement: ">= 6.21.0 < 8.0.0"
+  tags:
+    - windows
+    - puppetdsc
+    - dsc

@@ -1,0 +1,15 @@
+source ENV['GEM_SOURCE'] || 'https://rubygems.org'
+
+group :development do
+  gem 'rspec-puppet'
+  gem 'puppetlabs_spec_helper'
+  gem 'puppet-strings'
+end
+
+# Uncomment if using a non-PDK bundle env. If this is uncommented with legacy
+# PDK call to puppet strings generate, it will cause an error on unfound gems
+# group :pry do
+#   gem 'fuubar'
+#   gem 'pry-byebug'
+#   gem 'pry-stack_explorer'
+# end
