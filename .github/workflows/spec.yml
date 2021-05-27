@@ -1,6 +1,7 @@
 name: "Spec Tests"
 
-on: [pull_request]
+on:
+  pull_request:
 
 jobs:
   pre-req:
