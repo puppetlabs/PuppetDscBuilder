@@ -1,0 +1,16 @@
+name: "Spec Tests"
+
+on: [pull_request]
+
+jobs:
+  pre-req:
+    name: "Install Prerequisite Software and Modules"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2016, windows-2019]
+
+    - name: Checkout Source
+      uses: actions/checkout@v2
+      if: ${{ github.repository_owner == 'puppetlabs' }}
