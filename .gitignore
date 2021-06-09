@@ -1,5 +1,4 @@
 .git/
-import
 .vagrant/
 *Results.xml
 Puppet.Dsc/

@@ -1,0 +1,47 @@
+{
+    "name":  "bigmikey-powershellget",
+    "version":  "2.2.5-0-0",
+    "author":  "bigmikey",
+    "summary":  "PowerShell module with commands for discovering, installing, updating and publishing the PowerShell artifacts like Modules, DSC Resources, Ro...",
+    "license":  "Apache-2.0",
+    "source":  "https://go.microsoft.com/fwlink/?LinkId=828955",
+    "dependencies":  [
+                         {
+                             "version_requirement":  ">= 0.7.0 < 2.0.0",
+                             "name":  "puppetlabs/pwshlib"
+                         }
+                     ],
+    "operatingsystem_support":  [
+                                    {
+                                        "operatingsystem":  "windows",
+                                        "operatingsystemrelease":  [
+                                                                       "2012",
+                                                                       "2012R2",
+                                                                       "2016",
+                                                                       "2019"
+                                                                   ]
+                                    }
+                                ],
+    "requirements":  [
+                         {
+                             "name":  "puppet",
+                             "version_requirement":  ">= 6.0.0 < 8.0.0"
+                         }
+                     ],
+    "pdk-version":  "2.1.0",
+    "template-url":  "https://github.com/puppetlabs/pdk-templates#main",
+    "template-ref":  "heads/main-0-g03daa92",
+    "issues_url":  "https://go.microsoft.com/fwlink/?LinkId=828955",
+    "project_page":  "http://go.microsoft.com/fwlink/?linkid=2113539",
+    "tags":  [
+                 "windows",
+                 "puppetdsc",
+                 "dsc"
+             ],
+    "dsc_module_metadata":  {
+                                "guid":  "1d73a601-4a6c-43c5-ba3f-619b18bbb404",
+                                "author":  "Microsoft Corporation",
+                                "name":  "PowerShellGet",
+                                "version":  "2.2.5"
+                            }
+}

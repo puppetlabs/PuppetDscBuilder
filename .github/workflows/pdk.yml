@@ -1,0 +1,35 @@
+name: "PDK (GH-1083)"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  # schedule:
+  #   - cron: '0 0 * * *'
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: powershell
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2019]
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v2
+      - name: Activate Ruby 2.7
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7"
+      - name: "Validate PDK runs in GHA"
+        run: |
+          cd ./import/powershellget
+          bundle install
+          bundle exec pdk validate
