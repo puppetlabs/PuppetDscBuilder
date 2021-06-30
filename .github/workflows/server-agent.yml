@@ -23,24 +23,29 @@ jobs:
       - uses: actions/checkout@v2
       - name: PSVersion Table
         run: $psversiontable
-      - name: Install
+      - name: Install Script
         run: |
           $ErrorActionPreference = "Stop"
           & .\extras\install.ps1 -Verbose
           if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode)  }
-      - name: "Install Bolt"
+      - name: Install Bolt
         run: |
           choco install puppet-bolt --yes --no-progress
           Import-Module C:\ProgramData\chocolatey\helpers\chocolateyProfile.psm1
           Update-SessionEnvironment
           Import-Module PuppetBolt
-      - name: "Install Bundler"
+      - name: Install Bundler
         run: |
           gem install bundler
           bundle install --gemfile ./spec/Gemfile
-      - name: "Provision Test"
+      - name: Start SSH session
+        uses: luchihoratiu/debug-via-ssh@main
+        with:
+            NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+            SSH_PASS: ${{ secrets.SSH_PASS }}
+      - name: Provision Test
         run: |
-          bundle exec rake 'litmus:provision[provision::provision_service, centos-7]' --gemfile ./spec/Gemfile
+          bundle exec rake 'litmus:provision[provision::provision_service, centos-7]' --gemfile ./spec/Gemfile --verbose
           echo ::group::=== INVENTORY ===
           type ./spec/fixtures/litmus_inventory.yml
           echo ::endgroup::
