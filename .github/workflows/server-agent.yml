@@ -1,4 +1,4 @@
-name: CI
+name: Server-Agent
 on:
   push:
     branches: [ main ]
@@ -34,18 +34,30 @@ jobs:
           Import-Module C:\ProgramData\chocolatey\helpers\chocolateyProfile.psm1
           Update-SessionEnvironment
           Import-Module PuppetBolt
-      - name: Install Bundler
+      - name: Install Bundle Environment
         run: |
+          Move-Item -Path './spec/Gemfile' -Destination './Gemfile'
+          Move-Item -Path './spec/Rakefile' -Destination './Rakefile'
+          Move-Item -Path './spec/.fixtures.yml' -Destination './.fixtures.yml'
+          Move-Item -Path './spec/inventory.yml' -Destination './inventory.yml'
           gem install bundler
-          bundle install --gemfile ./spec/Gemfile
-      - name: Start SSH session
-        uses: luchihoratiu/debug-via-ssh@main
-        with:
-            NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-            SSH_PASS: ${{ secrets.SSH_PASS }}
+          bundle config set --local path './'
+          echo ::group::=== Bundle Install ===
+          bundle install --gemfile ./Gemfile
+          echo ::endgroup::
+          bundle info puppet_litmus
+      # - name: Start SSH session
+      #   uses: luchihoratiu/debug-via-ssh@main
+      #   with:
+      #     SSH_PASS: ${{ secrets.SSH_PASS }}
+      #     NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
       - name: Provision Test
         run: |
-          bundle exec rake 'litmus:provision[provision::provision_service, centos-7]' --gemfile ./spec/Gemfile --verbose
-          echo ::group::=== INVENTORY ===
+          bundle exec rake 'litmus:provision[provision::provision_service,windows-2016]' --verbose
+          bundle exec rake 'litmus:provision[provision::provision_service,rhel-8]' --verbose
+          echo ::group::=== LITMUSINVENTORY ===
           type ./spec/fixtures/litmus_inventory.yml
+          echo ::endgroup::
+          echo ::group::=== INVENTORY ===
+          type ./inventory.yml
           echo ::endgroup::
