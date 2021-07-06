@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Ability to invoke class-based resources by adding the `dscmeta_resource_implementation` key in the generated types; functionality requires [puppetlabs-pwshlib](https://forge.puppet.com/modules/puppetlabs/pwshlib) `0.10.0` or higher ([#172](https://github.com/puppetlabs/ruby-pwsh/issues/172))
 
+### Fixed
+
+- Ensure Puppet type definition for nested cim instances declares the CIM Instance type as a single-value enum to prevent runtime errors when parsing them ([#180](https://github.com/puppetlabs/Puppet.Dsc/issues/180))
+
 ## [0.6.0] - 2021-6-28
 
 ### Added
