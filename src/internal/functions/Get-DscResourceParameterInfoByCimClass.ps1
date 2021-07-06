@@ -48,7 +48,7 @@ Function Get-DscResourceParameterInfoByCimClass {
           # Capture the metadata in order to parse the Puppet type definition and retrieve the cim instance types.
           $EmbeddedInstanceMetadata = @{}
           $EmbeddedInstanceMetadata.$InstanceType = @{
-            cim_instance_type = "'$InstanceType'"
+            cim_instance_type = "Enum['$InstanceType']"
           }
           $CimClassProperties = Get-CimClassPropertiesList -ClassName $InstanceType
           ForEach ($Property in $CimClassProperties) {
@@ -120,7 +120,7 @@ Function Get-DscResourceParameterInfoByCimClass {
         # Split the definition for the struct and toss away the cim_instance_type key as this is a top-level property
         # and that information is captured in the mof_type key already.
         $SplitDefinition = $DefinedEmbeddedInstances.($Property.ReferenceClassName) -split "`n" |
-          Where-Object -FilterScript { $_ -notmatch "cim_instance_type => '$($Property.ReferenceClassName)'" }
+          Where-Object -FilterScript { $_ -notmatch "cim_instance_type => Enum\['$($Property.ReferenceClassName)'\]" }
         # Recombine the struct definition appropriately mapped as an array or singleton
         If ($Property.CimType -match 'Array') {
           $PuppetType = "Array[$($SplitDefinition -Join "`n")]"

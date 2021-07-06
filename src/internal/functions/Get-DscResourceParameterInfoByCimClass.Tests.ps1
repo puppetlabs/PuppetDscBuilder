@@ -51,6 +51,7 @@ Describe 'Get-DscResourceParameterInfoByCimClass' -Skip:(!$RunningElevated) -Tag
         # This function currently cannot discover default values
         $AclProperty.DefaultValue      | Should -BeNullOrEmpty
         $AclProperty.Type              | Should -MatchExactly ([Regex]::Escape('Array[Struct[{'))
+        $AclProperty.Type              | Should -MatchExactly ([Regex]::Escape("cim_instance_type => Enum['NTFSAccessControlEntry']"))
         $AclProperty.Help              | Should -MatchExactly '^Indicates the access control information'
         $AclProperty.is_parameter      | Should -Be $false
         $AclProperty.is_namevar        | Should -BeExactly 'false'
