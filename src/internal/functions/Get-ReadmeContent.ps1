@@ -34,7 +34,7 @@ function Get-ReadmeContent {
     [Parameter(Mandatory = $true)][ValidateNotNullOrEmpty()][string]$PowerShellModuleName,
     [ValidateNotNullOrEmpty()][string]$PowerShellModuleDescription,
     [ValidateNotNullOrEmpty()][string]$PowerShellModuleGalleryUri,
-    [ValidateNotNullOrEmpty()][string]$PowerShellModuleProjectUri,
+    [string]$PowerShellModuleProjectUri,
     [ValidateNotNullOrEmpty()][string]$PowerShellModuleVersion,
     [Parameter(Mandatory = $true)][ValidateNotNullOrEmpty()][string]$PuppetModuleName
   )
@@ -54,6 +54,10 @@ function Get-ReadmeContent {
     $MicrosoftLongPathSupportDocs = 'https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=powershell#enable-long-paths-in-windows-10-version-1607-and-later'
     $PuppetModuleInstallIssue = 'https://tickets.puppetlabs.com/browse/PUP-10924'
     $r10kInstallationIssue = 'https://github.com/puppetlabs/r10k/issues/1117'
+    If ([string]::IsNullOrEmpty($PowerShellModuleProjectUri)) {
+      # Instead link to the gallery page since the metadata is incomplete
+      $PowerShellModuleProjectUri = $PowerShellModuleGalleryUri
+    }
   }
 
   Process {
