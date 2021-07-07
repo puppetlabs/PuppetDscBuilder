@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Ensure that PowerShell module's missing the `ProjectURI` metadata key are still Puppetizable; they are valid modules on the PowerShell Gallery, so default the 'file an issue' link to the module's gallery link if the `ProjectUri` is missing ([#186](https://github.com/puppetlabs/ruby-pwsh/issues/186))
+
 ## [0.7.0] - 2021-07-02
 
 ### Added

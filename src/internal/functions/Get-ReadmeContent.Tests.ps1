@@ -91,7 +91,7 @@ Describe 'Get-ReadmeContent' -Tag 'Unit' {
         }
         { Get-ReadmeContent @Parameters } | Should -Throw "Cannot validate argument on parameter 'PowerShellModuleGalleryUri'. The argument is null or empty. Provide an argument that is not null or empty, and then try the command again."
       }
-      It 'Errors if the PowerShellModuleProjectUri is specified as an empty string' {
+      It 'Uses the PowerShellModuleGalleryUri for the PowerShellModuleProjectUri if the PowerShellModuleProjectUri is specified as an empty string' {
         $Parameters = @{
           PowerShellModuleName        = 'Foo.Bar'
           PowerShellModuleDescription = 'Foo and bar and baz!'
@@ -100,7 +100,8 @@ Describe 'Get-ReadmeContent' -Tag 'Unit' {
           PowerShellModuleVersion     = '1.0.0'
           PuppetModuleName            = 'foo_bar'
         }
-        { Get-ReadmeContent @Parameters } | Should -Throw "Cannot validate argument on parameter 'PowerShellModuleProjectUri'. The argument is null or empty. Provide an argument that is not null or empty, and then try the command again."
+        $Result = Get-ReadmeContent @Parameters
+        $Result | Should -MatchExactly "\[file an issue\]\($($Parameters.PowerShellModuleGalleryUri)\)"
       }
       It 'Errors if the PowerShellModuleVersion is specified as an empty string' {
         $Parameters = @{
