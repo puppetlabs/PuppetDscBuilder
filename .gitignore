@@ -6,6 +6,5 @@ Puppet.Dsc/
 docs/*
 !docs/about_*
 .bundle/
-spec/fixtures/manifests/
-spec/fixtures/modules/
+spec/fixtures/
 request.json
