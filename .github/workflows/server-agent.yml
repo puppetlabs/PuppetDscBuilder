@@ -48,7 +48,7 @@ jobs:
       - name: Provision
         run: |
             Get-ChildItem ./plans
-            bundle exec bolt plan show --modulepath ./spec/fixtures/modules/ -i spec/fixtures/litmus_inventory.yaml
+            bundle exec bolt plan show --modulepath ./spec/fixtures/modules/
         # bundle exec bolt --modulepath spec/fixtures/modules plan run puppetdsc::provision_machines --verbose
         # echo ::group::=== LITMUS INVENTORY ===
         # type ./spec/fixtures/litmus_inventory.yaml
